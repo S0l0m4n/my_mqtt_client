@@ -37,13 +37,16 @@ class MyMqttClient(AWSIoTMQTTClient):
             print("ERROR with MQTT client subscribing")
 
     def subscribeCallback(self, client, userdata, message):
-        self.messages.append(message.payload)
+        self.messages.append(message.payload.decode())
 
     def getMessages(self):
         return self.messages
 
     def getNumMessages(self):
         return len(self.messages)
+
+    def getLastMessage(self):
+        return self.messages[-1]
 
 
 if __name__ == "__main__":
