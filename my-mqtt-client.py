@@ -28,12 +28,11 @@ args = parser.parse_args()
 
 x = MyMqttClient()
 x.subscribe(args.topic)
-
 n = x.getNumMessages()
 
 while True:
     if n != x.getNumMessages():
         n = x.getNumMessages()
         print("#msgs = {}".format(n))
-        print(x.getMessages())
+        print(x.getLastMessage())
     time.sleep(1)
