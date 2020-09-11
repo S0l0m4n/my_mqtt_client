@@ -33,6 +33,7 @@ n = x.getNumMessages()
 while True:
     if n != x.getNumMessages():
         n = x.getNumMessages()
+        curr_time = time.strftime("%H:%M:%S", time.localtime())
         print("#msgs = {}".format(n))
-        print(x.getLastMessage())
+        print("[{0}] {1}".format(curr_time, x.getLastMessage()))
     time.sleep(1)
