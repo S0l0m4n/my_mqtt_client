@@ -17,17 +17,22 @@ HOST = "ag8zxd6iafu8d-ats.iot.eu-west-1.amazonaws.com"
 PORT = 8883
 
 class MyMqttClient(AWSIoTMQTTClient):
-    def __init__(self):
+    def __init__(self, host=HOST, port=PORT, creds=None):
         super().__init__(MY_CLIENT_ID)
+
+        if creds is None:
+            path = ""
+        else:
+            path = creds + "/"
 
         self.messages = []
 
-        self.configureEndpoint(HOST, PORT)
-        self.configureCredentials(ROOTCA, CLIKEY, CLICRT)
+        self.configureEndpoint(host, port)
+        self.configureCredentials(path + ROOTCA, path + CLIKEY, path + CLICRT)
         self.configureMQTTOperationTimeout(5)  # 5 sec
 
         self.connect()
-        print("{0} is connected to {1}".format(MY_CLIENT_ID, HOST))
+        print("{0} is connected to {1}".format(MY_CLIENT_ID, host))
 
     def subscribe(self, topic):
         if (super().subscribe(topic, 1, self.subscribeCallback)):
