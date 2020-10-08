@@ -42,7 +42,10 @@ class MyMqttClient(AWSIoTMQTTClient):
             print("ERROR with MQTT client subscribing")
 
     def subscribeCallback(self, client, userdata, message):
-        self.messages.append(message.payload.decode())
+        try:
+          self.messages.append(message.payload.decode())
+        except UnicodeDecodeError:
+          self.messages.append(str(message.payload))
 
     def getMessages(self):
         return self.messages
