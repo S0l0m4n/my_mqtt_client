@@ -17,7 +17,7 @@ HOST = "ag8zxd6iafu8d-ats.iot.eu-west-1.amazonaws.com"
 PORT = 8883
 
 class MyMqttClient(AWSIoTMQTTClient):
-    def __init__(self, host=HOST, port=PORT, creds=None):
+    def __init__(self, host=HOST, port=PORT, creds=None, verbose=True):
         super().__init__(MY_CLIENT_ID)
 
         if creds is None:
@@ -32,7 +32,8 @@ class MyMqttClient(AWSIoTMQTTClient):
         self.configureMQTTOperationTimeout(5)  # 5 sec
 
         self.connect()
-        print("{0} is connected to {1}".format(MY_CLIENT_ID, host))
+        if verbose:
+          print("{0} is connected to {1}".format(MY_CLIENT_ID, host))
 
     def subscribe(self, topic):
         if (super().subscribe(topic, 1, self.subscribeCallback)):
@@ -40,6 +41,9 @@ class MyMqttClient(AWSIoTMQTTClient):
             self.topic = topic
         else:
             print("ERROR with MQTT client subscribing")
+
+    def publish(self, topic, payload):
+        super().publish(topic, payload, 1)
 
     def subscribeCallback(self, client, userdata, message):
         try:
