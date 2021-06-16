@@ -17,7 +17,7 @@ parser = ArgumentParser(
     """
     Subscribe to a topic on AWS IoT Core
 
-    Example: ./%(prog)s --host=dev --creds=dev command/unit1
+    Example: ./%(prog)s --host=dev topic/sn
 
     NOTE: Supply these files in a matching "dev", "prod" or "qa" directory:
       clicrt.txt    client certificate
@@ -27,7 +27,6 @@ parser = ArgumentParser(
 
 parser.add_argument(
         '--host', choices=['dev','prod','qa'], help='host to connect to')
-parser.add_argument('--creds', metavar='<creds>', help='dir containing creds')
 parser.add_argument('topic', metavar='<topic>', help='topic to subscribe to')
 
 args = parser.parse_args()
@@ -39,7 +38,7 @@ elif args.host == "qa":
 else:
     host = HOST_DEV
 
-x = MyMqttClient(host, creds=args.creds)
+x = MyMqttClient(host, creds=args.host)
 x.subscribe(args.topic)
 n = x.getNumMessages()
 
