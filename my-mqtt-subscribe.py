@@ -9,6 +9,7 @@ import time
 
 HOST_DEV = "ag8zxd6iafu8d-ats.iot.eu-west-1.amazonaws.com"
 HOST_PROD = "a1d18d1xa0vfcy-ats.iot.eu-west-1.amazonaws.com"
+HOST_QA = "abz61otkz1ry8-ats.iot.eu-west-1.amazonaws.com"
 
 parser = ArgumentParser(
     formatter_class=RawDescriptionHelpFormatter,
@@ -18,13 +19,14 @@ parser = ArgumentParser(
 
     Example: ./%(prog)s --host=dev --creds=dev command/unit1
 
-    NOTE: You must supply the following files in the "cred" directory:
+    NOTE: Supply these files in a matching "dev", "prod" or "qa" directory:
       clicrt.txt    client certificate
       clikey.txt    client private key
       rootca.txt    Amazon CA root certificate
     """)
 
-parser.add_argument('--host', choices=['dev','prod'], help='host to connect to')
+parser.add_argument(
+        '--host', choices=['dev','prod','qa'], help='host to connect to')
 parser.add_argument('--creds', metavar='<creds>', help='dir containing creds')
 parser.add_argument('topic', metavar='<topic>', help='topic to subscribe to')
 
@@ -32,6 +34,8 @@ args = parser.parse_args()
 
 if args.host == "prod":
     host = HOST_PROD
+elif args.host == "qa":
+    host = HOST_QA
 else:
     host = HOST_DEV
 
